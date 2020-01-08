@@ -1,0 +1,25 @@
+// https://github.com/pugjs/pug-lint/blob/master/docs/rules.md
+{
+  "disallowBlockExpansion": true,
+  "disallowAttributeConcatenation": true,
+  "disallowClassAttributeWithStaticValue": true,
+  "disallowClassLiteralsBeforeIdLiterals": true,
+  "disallowDuplicateAttributes": true,
+  "disallowIdAttributeWithStaticValue": true,
+  "disallowMultipleLineBreaks": true,
+  "disallowSpacesInsideAttributeBrackets": true,
+  "requireStrictEqualityOperators": true,
+  "requireIdLiteralsBeforeAttributes": true,
+  "requireLineFeedAtFileEnd": true,
+  "requireLowerCaseAttributes": true,
+  "requireLowerCaseTags": true,
+  "requireSpaceAfterCodeOperator": true,
+  "requireStrictEqualityOperators": true,
+  "validateAttributeQuoteMarks": "\"",
+  "validateAttributeSeparator": ",\n",
+  "validateDivTags": true,
+  "validateExtensions": true,
+  "validateSelfClosingTags": true,
+  "validateIndentation": 2,
+  "validateLineBreaks": "LF"
+}
