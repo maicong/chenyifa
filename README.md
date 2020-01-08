@@ -7,7 +7,7 @@ Nice to have met you!
 # install dependencies
 yarn install
 
-# serve with hot reload at localhost:9080
+# serve with hot reload at localhost:3000
 yarn run dev
 
 # build electron application for production
