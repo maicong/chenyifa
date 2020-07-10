@@ -100,7 +100,9 @@ module.exports = {
     middleware: ['route']
   },
   generate: {
-    dir: 'docs'
+    dir: 'docs',
+    fallback: true,
+    subFolders: true
   },
   modules: [
     [
