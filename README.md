@@ -11,7 +11,7 @@ yarn install
 yarn run dev
 
 # build electron application for production
-yarn run dist
+yarn run docs
 ```
 
 ## License
