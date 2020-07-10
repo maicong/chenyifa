@@ -120,7 +120,7 @@ export default {
       this.ap.on('listswitch', ({ index }) => {
         this.clearTimer()
         const lrcEl = document.querySelector('.aplayer-lrc-contents')
-        lrcEl.style = `transform:translateY(0)`
+        lrcEl.style = 'transform:translateY(0)'
         if (this.current) {
           this.$storage.lsSet('__lastSongid', this.current.songid)
         }

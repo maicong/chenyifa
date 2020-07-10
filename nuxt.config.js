@@ -11,7 +11,7 @@ module.exports = {
   mode: 'spa',
   env: {
     nodeEnv: nodeEnv,
-    serverUrl: isDevMode ? Pkg.config.serverUrlDEV : Pkg.config.serverUrlPRO
+    serverUrl: Pkg.config.serverUrl
   },
   head: {
     title: '陈一发儿',
@@ -97,7 +97,10 @@ module.exports = {
   router: {
     linkActiveClass: 'link-active',
     linkExactActiveClass: 'link-exact-active',
-    middleware: ['cnzz']
+    middleware: ['route']
+  },
+  generate: {
+    dir: 'docs'
   },
   modules: [
     [

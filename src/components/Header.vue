@@ -25,11 +25,9 @@ export default {
     getTitle () {
       switch (this.$route.name) {
         case 'playlist-id':
-          const id = this.$route.params.id
-          return id ? `歌单: ${id}` : '歌单不存在'
+          return this.$route.params.id ? `歌单: ${this.$route.params.id}` : '歌单不存在'
         case 'search-keyword':
-          const keyword = this.$route.params.keyword
-          return keyword ? `搜索: ${keyword}` : '搜索'
+          return this.$route.params.keyword ? `搜索: ${this.$route.params.keyword}` : '搜索'
         default:
           return '陈一发儿'
       }

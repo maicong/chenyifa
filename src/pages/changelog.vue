@@ -22,6 +22,10 @@ export default {
     return {
       list: [
         {
+          time: '2020.07.10',
+          name: 'v2.1 优化数据调用形式'
+        },
+        {
           time: '2019.12.02',
           name: 'v2.0 由 DS audio 提供完整歌单数据，新版试运行'
         },

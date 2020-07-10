@@ -3,7 +3,7 @@
   .container.main
     .title 《 小橘猫爱唱歌 》
     .album(
-      v-if="albumList.length"
+      v-if="albumList && albumList.length"
     )
       .album-item(
         v-for="album of albumList",
@@ -11,13 +11,13 @@
       )
         .name {{ album.name }}
     .album.album--none(
-      v-if="!albumList.length"
+      v-if="!albumList || !albumList.length"
     )
-      .text {{ loadText }}
+      .text 暂无歌单哦
 </template>
 
 <script>
-import _ from 'lodash'
+import albumList from '~/assets/json/albums.json'
 export default {
   name: 'Index',
   head () {
@@ -27,56 +27,10 @@ export default {
   },
   data () {
     return {
-      albumList: [],
-      loadText: '歌单加载中，请稍后...'
-    }
-  },
-  mounted () {
-    const albumList = this.$storage.lsGet('__albumList')
-    if (_.size(albumList)) {
-      this.albumList = albumList
-    } else {
-      this.getAlbumList()
+      albumList: albumList || []
     }
   },
   methods: {
-    async getAlbumList () {
-      // const cookie = await this.$api.get('/auth.cgi', {
-      //   api: 'SYNO.API.Auth',
-      //   version: 3,
-      //   method: 'login',
-      //   account: 'cyfwlp',
-      //   passwd: '5267373',
-      //   session: 'AudioStation',
-      //   format: 'cookie'
-      // })
-      if (!this.$cookie.get('id')) {
-        const cookie = await this.$api.get('/auth')
-        if (!cookie) {
-          this.loadText = '暂无歌单哦'
-          this.$msg('用户验证失败，稍后再试试', 'error')
-          return
-        }
-      }
-      // const list = await this.$api.get('/AudioStation/album.cgi', {
-      //   api: 'SYNO.AudioStation.Album',
-      //   method: 'list',
-      //   version: 3,
-      //   library: 'all',
-      //   sort_direction: 'asc',
-      //   offset: 0,
-      //   sort_by: 'name',
-      //   limit: 5000
-      // })
-      const list = await this.$api.get('/album')
-      if (!list) {
-        this.loadText = '暂无歌单哦'
-        this.$msg('抱歉，暂时无法拉取歌单信息', 'error')
-        return
-      }
-      this.albumList = _.get(list, 'albums')
-      this.$storage.lsSet('__albumList', this.albumList)
-    },
     goPlayList (name) {
       this.$router.push({
         name: 'playlist-id',

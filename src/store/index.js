@@ -4,7 +4,8 @@ export const state = () => ({
   initAudios: [],
   addAudios: [],
   playID: null,
-  downloadProgress: 0
+  downloadProgress: 0,
+  isLoadAuth: false
 })
 
 export const actions = {}
@@ -33,5 +34,11 @@ export const mutations = {
    */
   setDownloadProgress (state, process) {
     state.downloadProgress = process
+  },
+  /**
+   * 身份验证
+   */
+  setLoadAuth (state, bool) {
+    state.isLoadAuth = bool
   }
 }

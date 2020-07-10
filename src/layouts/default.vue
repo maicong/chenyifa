@@ -26,6 +26,19 @@ export default {
     CFooter,
     CPlayer
   },
+  beforeMount () {
+    this.$msg('正在更新验证信息，期间歌曲可能无法播放...')
+    const iframe = document.createElement('iframe')
+    iframe.src = `${process.env.serverUrl}/auth.cgi?api=SYNO.API.Auth&version=3&method=login&account=cyfwlp&passwd=5267373&session=AudioStation&format=cookie`
+    iframe.style.display = 'none'
+    iframe.onload = () => {
+      this.$msg('验证信息已更新，尽情听歌吧~~', 'ok')
+    }
+    iframe.onerror = () => {
+      this.$msg('验证信息更新失败，歌曲无法播放，请刷新重试！', 'error')
+    }
+    document.body.appendChild(iframe)
+  },
   watch: {
     '$cyfe.isOffline' (status) {
       if (status) {

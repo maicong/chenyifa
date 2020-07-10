@@ -2,16 +2,19 @@
 .c-footer
   .slogan 我陈一发儿最牛逼
   .copyright
-    | &copy; 2019-2020 CHENYIFA.ORG
+    | &copy; 2020
     a.link(
       @click="showHelp = true"
-    ) 获取帮助
+    ) 帮助
+    a.link(
+      href="https://github.com/maicong/chenyifa"
+    ) 源码
     nuxt-link.link(
       to="/changelog"
-    ) 更新日志
+    ) 更新
     nuxt-link.link(
       to="/terms"
-    ) 免责声明
+    ) 声明
   .help(
     :class="{ 'help--show': showHelp }"
   )

@@ -30,7 +30,7 @@
       ) 添加到播放列表
       .length(
         v-if="songs.length"
-      ) {{ `（ 当前歌曲数: ${songs.length} ）` }}
+      ) {{ `（已显示 ${songs.length} 首）` }}
     .songs(
       v-if="songs.length"
     )
@@ -98,47 +98,23 @@ export default {
       this.loadText = '搜索中'
       this.statusList = []
 
-      let albumList = this.$storage.lsGet('__albumList') || []
-      if (!this.$cookie.get('id')) {
-        const cookie = await this.$api.get('/auth')
-        if (!cookie) {
-          this.$msg('用户验证失败，稍后再试试', 'error')
-          this.isSearch = false
-          this.loadText = '搜索'
-          return
-        }
-      }
+      let albumList = require('~/assets/json/albums.json') || []
       if (!_.size(albumList)) {
-        const list = await this.$api.get('/album')
-        if (!list) {
-          if (window._czc) {
-            window._czc.push(['_trackEvent', '搜索', this.keyword, '歌单为空'])
-          }
-          this.$msg('搜索失败，歌单为空')
-          this.isSearch = false
-          this.loadText = '搜索'
-          return
+        if (window._czc) {
+          window._czc.push(['_trackEvent', '搜索', this.keyword, '歌单为空'])
         }
-        albumList = _.get(list, 'albums')
-        this.$storage.lsSet('__albumList', albumList)
+        this.$msg('搜索失败，歌单为空')
+        this.isSearch = false
+        this.loadText = '搜索'
+        return
       }
       let searchList = []
       for (const album of albumList) {
-        let songList = this.$storage.lsGet(`__songList_${album.name}`) || []
-        if (!_.size(songList)) {
-          this.statusList.push(`加载歌单「 ${album.name} 」...`)
-          const data = await this.$api.get('/songs', {
-            album: album.name
-          })
-          if (data) {
-            songList = _.get(data, 'songs')
-            this.$storage.lsSet(`__songList_${album.name}`, songList)
-          }
-        }
+        const songList = require(`~/assets/json/songs-${album.name}.json`) || []
         const filterList = _.filter(songList, song => {
           return song.title.indexOf(this.keyword) > -1
         })
-        this.statusList.push(`歌单「${album.name}」，找到 ${filterList.length} 首`)
+        // this.statusList.push(`歌单「${album.name}」，找到 ${filterList.length} 首`)
         searchList = [...searchList, ...filterList]
       }
 
@@ -152,7 +128,7 @@ export default {
         this.loadText = '搜索'
         return
       }
-      this.statusList.push(`<strong>共找到 ${_.size(searchList)} 首相关歌曲</strong>`)
+      this.statusList.push(`<strong>找到 ${_.size(searchList)} 首相关歌曲</strong>`)
       this.chunkList = _.chunk(searchList, 500)
       this.songs = this.chunkList.shift()
       this.audios = this.getAudioList(this.songs)
@@ -188,7 +164,7 @@ export default {
           artist: '陈一发儿',
           url: `${process.env.serverUrl}/stream?id=${s.id}`,
           cover,
-          lrc: '[00:00.00] 欢迎投递歌词到下面邮箱 [00:05.00] help@chenyifa.org',
+          lrc: '[00:00.00] 欢迎投递歌词到下面邮箱 [00:05.00] s2ng@qq.com',
           additional: s.additional
         })
       }

@@ -71,50 +71,19 @@ export default {
     }
   },
   mounted () {
-    const songList = this.$storage.lsGet(`__songList_${this.id}`)
-    if (_.size(songList)) {
-      this.songs = songList
-      this.getAudioList(songList)
-    } else {
-      this.getSongList()
-    }
+    this.getSongList()
     require('stickyfilljs').add(document.querySelector('.songs-item--head'))
   },
   methods: {
-    async getSongList () {
-      if (!this.$cookie.get('id')) {
-        const cookie = await this.$api.get('/auth')
-        if (!cookie) {
-          this.loadText = '暂无歌曲信息'
-          this.$msg('用户验证失败，稍后再试试', 'error')
-          return
-        }
-      }
-      // const data = await this.$api.get('/AudioStation/song.cgi', {
-      //   api: 'SYNO.AudioStation.Song',
-      //   method: 'list',
-      //   version: 3,
-      //   library: 'all',
-      //   additional: 'song_tag,song_audio,song_rating',
-      //   album: this.id,
-      //   offset: 0,
-      //   album_artist: '陈一发儿',
-      //   limit: 50000
-      // })
-      const data = await this.$api.get('/songs', {
-        album: this.id
-      })
-
-      if (!data) {
+    getSongList () {
+      const songs = require(`~/assets/json/songs-${this.id}.json`) || []
+      if (!_.size(songs)) {
         this.loadText = '暂无歌曲信息'
         this.$msg('Emmmm，这个歌单好像是空的！')
         return
       }
-
-      const songs = _.get(data, 'songs')
       this.songs = songs
       this.getAudioList(songs)
-      this.$storage.lsSet(`__songList_${this.id}`, songs)
     },
     /**
      * 获取播放列表
@@ -127,9 +96,9 @@ export default {
           songid: s.id,
           name: s.title.replace(/([\s-]+)?陈一发儿/g, ''),
           artist: '陈一发儿',
-          url: `${process.env.serverUrl}/stream?id=${s.id}`,
+          url: `${process.env.serverUrl}/AudioStation/stream.cgi?api=SYNO.AudioStation.Stream&method=stream&version=1&id=${s.id}&seek_position=0`,
           cover,
-          lrc: '[00:00.00] 欢迎投递歌词到下面邮箱 [00:05.00] help@chenyifa.org',
+          lrc: '[00:00.00] 欢迎投递歌词到下面邮箱 [00:05.00] s2ng@qq.com',
           additional: s.additional
         })
       }
