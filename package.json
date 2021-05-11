@@ -46,7 +46,7 @@
     "date-fns": "^1.30.1",
     "event-source-polyfill": "^1.0.15",
     "js-cookie": "^2.2.1",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "mousetrap": "^1.6.5",
     "nuxt": "^2.13.3",
     "scroll-into-view": "^1.14.2",
