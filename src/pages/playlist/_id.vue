@@ -15,25 +15,23 @@
       .songs-item.songs-item--head
         .index 序号
         .label 标题
-        .bitrate 比特率
-        .duration 时长
+        .size 大小
       .songs-item(
         v-if="songs.length",
         v-for="(song, index) of songs",
-        :class="{ 'songs-item--active': $store.state.playID === song.id }"
+        :class="{ 'songs-item--active': $store.state.playID === song.path }"
       )
         .index {{ index + 1 }}
         .label(
           @click="shiwchPlayID(song)"
-        ) {{ getName(song.title) }}
-        .bitrate {{ getBitrate(song.additional.song_audio.bitrate) }}kbps
-        .duration {{ sec2minute(song.additional.song_audio.duration) }}
+        ) {{ song.name }}
+        .size {{ song.size }}
         .action
           .btn(
             @click="add2Playlist(song)"
           ) 添加
           //- .btn(
-          //-   @click="download(song.id)"
+          //-   @click="download(song.url)"
           //- ) 下载
       .songs-item.songs-item--none(
         v-if="!songs.length"
@@ -92,15 +90,12 @@ export default {
       const audios = []
       const cover = require('~/static/icon_120.png')
       for (var s of songs) {
-        audios.push({
-          songid: s.id,
-          name: s.title.replace(/([\s-]+)?陈一发儿/g, ''),
-          artist: '陈一发儿',
-          url: `${process.env.serverUrl}/AudioStation/stream.cgi?api=SYNO.AudioStation.Stream&method=stream&version=1&id=${s.id}&seek_position=0`,
+        audios.push(Object.assign({
           cover,
+          artist: '陈一发儿',
+          url: `${process.env.serverUrl}${s.path}`,
           lrc: '[00:00.00] 欢迎投递歌词到下面邮箱 [00:05.00] s2ng@qq.com',
-          additional: s.additional
-        })
+        }, s))
       }
       const audioList = this.$storage.lsGet('__audioList')
       if (!_.size(audioList)) {
@@ -109,40 +104,15 @@ export default {
       this.audios = audios
     },
     /**
-     * 获取名称
-     */
-    getName (name) {
-      return name.replace(/([\s-]+)?陈一发儿/g, '')
-    },
-    /**
-     * 秒转分钟
-     */
-    sec2minute (t) {
-      const hour = parseInt(t / 60 / 60 % 60)
-      const min = parseInt(t / 60 % 60)
-      const sec = parseInt(t % 60)
-      let time = [hour, min, sec]
-      if (!hour) {
-        time = [min, sec]
-      }
-      return time.join(':').replace(/\b(\d)\b/g, '0$1')
-    },
-    /**
-     * 获取比特率
-     */
-    getBitrate (bitrate) {
-      return bitrate / 1000
-    },
-    /**
      * 切换歌曲
      */
     shiwchPlayID (song) {
       if (window._czc) {
-        window._czc.push(['_trackEvent', '播放', this.id, song.title])
+        window._czc.push(['_trackEvent', '播放', this.id, song.name])
       }
       this.add2Playlist(song, false)
-      this.$store.commit('setPlayID', song.id)
-      this.$msg(`切换到单曲 < ${this.getName(song.title)} >`, 'ok')
+      this.$store.commit('setPlayID', song.path)
+      this.$msg(`切换到单曲 < ${song.name} >`, 'ok')
     },
     /**
      * 播放当前歌曲
@@ -162,15 +132,15 @@ export default {
         this.$store.commit('setAddAudios', this.audios)
         showMsg && this.$msg(`歌单「 ${this.id} 」已添加到播放列表`, 'ok')
       } else {
-        const audio = _.find(this.audios, { songid: song.id })
+        const audio = _.find(this.audios, { path: song.path })
         this.$store.commit('setAddAudios', [audio])
-        showMsg && this.$msg(`单曲 < ${this.getName(song.title)} > 已添加到播放列表`, 'ok')
+        showMsg && this.$msg(`单曲 < ${song.name} > 已添加到播放列表`, 'ok')
       }
     },
     /**
      * 下载歌曲
      */
-    download (songid) {
+    download (url) {
       this.$msg('抱歉，下载功能还未完成！')
     }
   },
@@ -237,10 +207,7 @@ export default {
         justify-content space-between
         padding 0 20px
         cursor pointer
-      .bitrate
-        flex 1
-        text-align center
-      .duration
+      .size
         flex .5
         text-align center
         padding 0 10px

@@ -12,38 +12,40 @@
           .content 粉丝是指对于各类组织、人物、产品、艺术品、信念或流行趋势抱有极度、无法抑制的喜爱与支持的人。独特事物的爱好者一般会设立自己的爱好者区域。他们会开办爱好者俱乐部、举办粉丝会、创办爱好者杂志、写粉丝信或参与类似的活动。
         .terms-item
           .name 关于本站
-          .content 本站为粉丝自发搭建的针对某歌手的个人性质听歌网站，一切音频资源均来自互联网，视访问压力不定期关停，并不保证 24 小时在线。本站承诺不收费，不提供音频售卖服务，如有疑问请联系 s2ng@qq.com，但最终解释权归本站所有。
+          .content
+            | 本站为粉丝自发搭建的针对某歌手的个人性质听歌网站，一切音频资源均来自互联网，视访问压力不定期关停，并不保证 24 小时在线。本站承诺不收费，不提供音频售卖服务，如有疑问请联系 &nbsp;
+            a(
+              href="mailto:c1fa@foxmail.com",
+              target="_blank"
+            ) c1fa@foxmail.com
+            | ，但最终解释权归本站所有。
         .terms-item
           .name 关于下载
           .content
-            | 如需下载，请前往 &nbsp;
+            | 本站不提供下载，如有需求，请前往 &nbsp;
             a(
-              href="https://67373.loadream.com/",
+              href="https://67373.hercd.com/",
               target="_blank"
-            ) 67373.loadream.com
+            ) 67373.hercd.com
         .terms-item
-          .name 特别鸣谢
+          .name 外援链接
           .content
             a(
-              href="https://www.loadream.com/",
+              href="https://67373.hercd.com/",
               target="_blank"
-            ) 童话镇
-            a(
-              href="https://www.loadream.com/loadream-1088-1-1.html",
-              target="_blank"
-            ) DS audio
+            ) HERCD
             a(
               href="https://huati.weibo.com/1362650",
               target="_blank"
-            ) #陈一发儿超话#
+            ) 陈一发儿的微博超话
             a(
-              href="https://www.weibo.com/u/1693163742",
+              href="https://www.youtube.com/channel/UC7QVieoTCNwwW84G0bddXpA",
               target="_blank"
-            ) @萝菽菽
+            ) 陈一发儿的YouTube
             a(
-              href="https://www.youtube.com/channel/UC5ibEE0btMSv_D9A6ZllY4A",
+              href="https://www.instagram.com/yifaer_chen/",
               target="_blank"
-            ) 最愛陈一发儿
+            ) 陈一发儿的Instagram
 </template>
 <script>
 export default {

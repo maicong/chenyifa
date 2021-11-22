@@ -8,7 +8,8 @@ const isDevMode = ['development', 'analyze'].includes(nodeEnv)
 module.exports = {
   srcDir: Path.resolve(__dirname, 'src'),
   globalName: 'cyfe',
-  mode: 'spa',
+  ssr: false,
+  target: 'static',
   env: {
     nodeEnv: nodeEnv,
     serverUrl: Pkg.config.serverUrl
@@ -122,12 +123,11 @@ module.exports = {
     ]
   ],
   plugins: [
-    // '~/plugins/vue-i18n.js',
     '~/plugins/util.js',
     '~/plugins/cookie.js',
     '~/plugins/msg.js',
     '~/plugins/api.js',
-    // '~/plugins/css-vars-ponyfill.js',
+    '~/plugins/css-vars-ponyfill.js',
     {
       src: '~/plugins/storage.js',
       mode: 'client'

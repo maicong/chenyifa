@@ -22,6 +22,10 @@ export default {
     return {
       list: [
         {
+          time: '2021.11.22',
+          name: 'v2.2 更新歌单信息和歌曲链接；更新快捷键'
+        },
+        {
           time: '2020.07.10',
           name: 'v2.1 优化数据调用形式'
         },

@@ -38,23 +38,23 @@
         .index 序号
         .label 标题
         .album 歌单
-        .duration 时长
+        .size 大小
       .songs-item(
         v-for="(song, index) of songs",
-        :class="{ 'songs-item--active': $store.state.playID === song.id }"
+        :class="{ 'songs-item--active': $store.state.playID === song.path }"
       )
         .index {{ index + 1 }}
         .label(
           @click="shiwchPlayID(song)"
-        ) {{ getName(song.title) }}
-        .album {{ song.additional.song_tag.album }}
-        .duration {{ sec2minute(song.additional.song_audio.duration) }}
+        ) {{ song.name }}
+        .album {{ song.album }}
+        .size {{ song.size }}
         .action
           .btn(
             @click="add2Playlist(song)"
           ) 添加
           //- .btn(
-          //-   @click="download(song.id)"
+          //-   @click="download(song.url)"
           //- ) 下载
       .songs-item.songs-item--more(
         v-if="chunkList.length > 1"
@@ -111,8 +111,10 @@ export default {
       let searchList = []
       for (const album of albumList) {
         const songList = require(`~/assets/json/songs-${album.name}.json`) || []
-        const filterList = _.filter(songList, song => {
-          return song.title.indexOf(this.keyword) > -1
+        const filterList = _.filter(songList.map(v => _.assign({
+          album: album.name,
+        }, v)), song => {
+          return song.name.indexOf(this.keyword) > -1
         })
         // this.statusList.push(`歌单「${album.name}」，找到 ${filterList.length} 首`)
         searchList = [...searchList, ...filterList]
@@ -158,44 +160,22 @@ export default {
       const audios = []
       const cover = require('~/static/icon_120.png')
       for (var s of songs) {
-        audios.push({
-          songid: s.id,
-          name: s.title.replace(/([\s-]+)?陈一发儿/g, ''),
-          artist: '陈一发儿',
-          url: `${process.env.serverUrl}/stream?id=${s.id}`,
+        audios.push(Object.assign({
           cover,
+          artist: '陈一发儿',
+          url: `${process.env.serverUrl}${s.path}`,
           lrc: '[00:00.00] 欢迎投递歌词到下面邮箱 [00:05.00] s2ng@qq.com',
-          additional: s.additional
-        })
+        }, s))
       }
       return audios
-    },
-    /**
-     * 获取名称
-     */
-    getName (name) {
-      return name.replace(/([\s-]+)?陈一发儿/g, '')
-    },
-    /**
-     * 秒转分钟
-     */
-    sec2minute (t) {
-      const hour = parseInt(t / 60 / 60 % 60)
-      const min = parseInt(t / 60 % 60)
-      const sec = parseInt(t % 60)
-      let time = [hour, min, sec]
-      if (!hour) {
-        time = [min, sec]
-      }
-      return time.join(':').replace(/\b(\d)\b/g, '0$1')
     },
     /**
      * 切换歌曲
      */
     shiwchPlayID (song) {
       this.add2Playlist(song, false)
-      this.$store.commit('setPlayID', song.id)
-      this.$msg(`切换到单曲 < ${this.getName(song.title)}>`, 'ok')
+      this.$store.commit('setPlayID', song.path)
+      this.$msg(`切换到单曲 < ${song.name}>`, 'ok')
     },
     /**
      * 播放当前歌曲
@@ -212,15 +192,15 @@ export default {
         this.$store.commit('setAddAudios', this.audios)
         showMsg && this.$msg(`当前 ${this.songs.length} 首歌曲已添加到播放列表`, 'ok')
       } else {
-        const audio = _.find(this.audios, { songid: song.id })
+        const audio = _.find(this.audios, { path: song.path })
         this.$store.commit('setAddAudios', [audio])
-        showMsg && this.$msg(`单曲 < ${this.getName(song.title)} > 已添加到播放列表`, 'ok')
+        showMsg && this.$msg(`单曲 < ${song.name} > 已添加到播放列表`, 'ok')
       }
     },
     /**
      * 下载歌曲
      */
-    download (songid) {
+    download (url) {
       this.$msg('抱歉，下载功能还未完成！')
     }
   },
@@ -328,7 +308,7 @@ export default {
       .album
         flex 1
         text-align center
-      .duration
+      .size
         flex .5
         padding 0 10px
         text-align center

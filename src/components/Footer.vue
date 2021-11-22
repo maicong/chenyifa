@@ -2,7 +2,7 @@
 .c-footer
   .slogan 我陈一发儿最牛逼
   .copyright
-    | &copy; 2020
+    | &copy; 2020-2021
     a.link(
       @click="showHelp = true"
     ) 帮助
@@ -23,14 +23,18 @@
         @click="showHelp = false"
       ) +
       p
+        kbd ESC
+        span 或
         kbd H
-        em 帮助
+        em 显示/隐藏帮助
       //- p
       //-   kbd F
       //-   em 下载
       p
         kbd Enter
-        em 播放、暂停
+        span 或
+        kbd Space
+        em 播放/暂停
       p
         kbd W
         span 或
@@ -66,6 +70,9 @@ export default {
   mounted () {
     const mousetrap = new Mousetrap()
     mousetrap.bind(['h'], () => {
+      this.showHelp = !this.showHelp
+    })
+    mousetrap.bind(['esc'], () => {
       this.showHelp = !this.showHelp
     })
   },

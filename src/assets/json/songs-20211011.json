@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Snowman",
+    "path": "/%E8%8C%B6%E8%AF%9D%E4%BC%9A/20211011/Snowman.mp3",
+    "isFlac": false,
+    "isVideo": false,
+    "size": "9.04Mb"
+  },
+  {
+    "name": "如愿",
+    "path": "/%E8%8C%B6%E8%AF%9D%E4%BC%9A/20211011/%E5%A6%82%E6%84%BF.mp3",
+    "isFlac": false,
+    "isVideo": false,
+    "size": "10.45Mb"
+  },
+  {
+    "name": "如愿第二遍",
+    "path": "/%E8%8C%B6%E8%AF%9D%E4%BC%9A/20211011/%E5%A6%82%E6%84%BF%E7%AC%AC%E4%BA%8C%E9%81%8D.mp3",
+    "isFlac": false,
+    "isVideo": false,
+    "size": "10.06Mb"
+  }
+]

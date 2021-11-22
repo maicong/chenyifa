@@ -30,13 +30,13 @@ export default {
     },
     '$store.state.addAudios' (audios) {
       const list = this.ap.list.audios
-      const newList = _.uniqBy([...list, ...audios], 'songid')
-      const diff = _.differenceBy(newList, list, 'songid')
+      const newList = _.uniqBy([...list, ...audios], 'path')
+      const diff = _.differenceBy(newList, list, 'path')
       this.ap.list.add(diff)
       this.listenRemove()
     },
     '$store.state.playID' (songid, oldSongid) {
-      if (!_.includes([oldSongid, this.current.songid], songid)) {
+      if (!_.includes([oldSongid, this.current.path], songid)) {
         this.switchSongid(songid)
       }
     }
@@ -103,8 +103,8 @@ export default {
       })
 
       this.ap.on('play', () => {
-        this.$store.commit('setPlayID', this.current.songid)
-        this.$storage.lsSet('__lastSongid', this.current.songid)
+        this.$store.commit('setPlayID', this.current.path)
+        this.$storage.lsSet('__lastSongid', this.current.path)
       })
 
       this.ap.on('ended', () => {
@@ -113,7 +113,7 @@ export default {
 
       this.ap.on('timeupdate', () => {
         if (this.current) {
-          document.title = `正在播放: < ${this.current.name} - 陈一发儿 > - 歌单「 ${this.current.additional.song_tag.album} 」 `
+          document.title = `正在播放: < ${this.current.name}`
         }
       })
 
@@ -122,7 +122,7 @@ export default {
         const lrcEl = document.querySelector('.aplayer-lrc-contents')
         lrcEl.style = 'transform:translateY(0)'
         if (this.current) {
-          this.$storage.lsSet('__lastSongid', this.current.songid)
+          this.$storage.lsSet('__lastSongid', this.current.path)
         }
       })
 
@@ -147,7 +147,7 @@ export default {
       if (songid) {
         if (!this.ap) return
         const index = _.findIndex(this.ap.list.audios, {
-          songid: songid
+          path: songid
         })
         if (index > -1) {
           this.ap.seek(0)
@@ -178,7 +178,7 @@ export default {
 
       const mousetrap = new Mousetrap()
 
-      mousetrap.bind('enter', () => {
+      mousetrap.bind(['enter', 'space'], () => {
         this.ap.toggle()
       })
       mousetrap.bind(['up', 'w'], () => {
